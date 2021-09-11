@@ -9,7 +9,7 @@ public class WeaponControlller : MonoBehaviour
     public GameObject bulletPreFab;
     private float bulletWaitTime = 0.2f;
     private float timer = 0.0f;
-    private float visualTime = 0.0f;
+
 
     public float bulletForce = 20f;
 

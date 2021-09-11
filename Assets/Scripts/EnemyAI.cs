@@ -4,15 +4,31 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Vector3 startingPosition;
+    private void Start()
+    {
+        startingPosition = transform.position;
+    }
+
+    private void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private Vector3 GetRoamingPosition()
     {
-        
+        return startingPosition + GetRandomDirection() * Random.Range(10f, 70f);
     }
+
+    private static Vector3 GetRandomDirection()
+    {
+        return new Vector3(UnityEngine.Random.Range(-1f, -1f), UnityEngine.Random.Range(-1f, -1f)).normalized;
+    }
+
+    private void Move()
+    {
+
+    }
+
+
 }

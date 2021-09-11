@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         weaponPivot.rotation = rotation;
 
         //Flip Player based on mouse position
-        Debug.Log(dir);
+        //Debug.Log(dir);
         if(dir.x >= 0.0)
         {
             if(spr.flipX == true)
