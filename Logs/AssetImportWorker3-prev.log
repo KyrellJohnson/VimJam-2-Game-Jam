@@ -1332,3 +1332,4 @@ Received Import Request.
 Start importing Assets/Art Assets/Player/Run using Guid(824fe6668c4b1c6478c5e3306abf2cb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c9b2a9ec18cbf70d6da441c1df873cf0') in 0.005788 seconds
   Import took 0.008640 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file

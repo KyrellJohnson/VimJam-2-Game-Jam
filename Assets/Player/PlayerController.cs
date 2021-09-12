@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private float health;
     [SerializeField]
     private float maxHealth = 10;
+    private Animator anim;
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
         spr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 
         health = maxHealth;
         weaponPivot = transform.Find("WeaponPivot").GetComponent<Transform>();
@@ -53,6 +55,16 @@ public class PlayerController : MonoBehaviour
         //read movement value
         horizontal = playerControls.Player.HorizontalMovement.ReadValue<float>();
         vertical = playerControls.Player.VerticalMovement.ReadValue<float>();
+
+        if(horizontal != 0|| vertical != 0)
+        {
+            anim.SetBool("moving", true);
+        }
+        else
+        {
+            anim.SetBool("moving", false);
+        }
+
 
         Vector2 mousePos = playerControls.Player.MouseAim.ReadValue<Vector2>();
        
