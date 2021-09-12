@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     private float maxHealth = 10;
 
     [SerializeField]
-    private float attackDamage = 5;
+    private float attackDamage = 3;
 
     float playerDamage;
     float maxDistanceToFollowPlayer = 25;
@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
 
     public Transform firePoint;
     public GameObject bulletPreFab;
+    [SerializeField]
     private float bulletWaitTime = 0.4f;
     private float timer = 0.0f;
     public float bulletForce = 35f;
@@ -31,6 +32,11 @@ public class Enemy : MonoBehaviour
         PlayerController playerController = player.GetComponent<PlayerController>();
         playerDamage = playerController.getAttackDamage();
         spr = GetComponent<SpriteRenderer>();
+    }
+
+    public float getDamageVal()
+    {
+        return attackDamage;
     }
 
     public void TakeDamage()
@@ -132,6 +138,7 @@ public class Enemy : MonoBehaviour
             
             timer = 0.0f;
             GameObject bullet = Instantiate(bulletPreFab, firePoint.position, firePoint.rotation);
+            bullet.transform.parent = gameObject.transform;
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
             

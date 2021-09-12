@@ -21,14 +21,19 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D col;
     private SpriteRenderer spr;
 
+    [SerializeField]
+    private float health;
+    [SerializeField]
+    private float maxHealth = 10;
+
     private void Awake()
     {
         playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
         spr = GetComponent<SpriteRenderer>();
-       
 
+        health = maxHealth;
         weaponPivot = transform.Find("WeaponPivot").GetComponent<Transform>();
     }
 
@@ -93,6 +98,15 @@ public class PlayerController : MonoBehaviour
     {
         float damage = attackDamage;
         return damage;
+    }
+
+    public void takeDamage(float dmg)
+    {
+        health = health - dmg;
+        if(health <= 0)
+        {
+            Debug.Log("GAME OVER");
+        }
     }
 
 

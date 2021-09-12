@@ -47,6 +47,8 @@ public class WeaponControlller : MonoBehaviour
     void Shoot()
     {
         GameObject bullet = Instantiate(bulletPreFab, firePoint.position, firePoint.rotation);
+        bullet.transform.parent = gameObject.transform;
+
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
     }
