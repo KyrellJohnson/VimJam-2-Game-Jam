@@ -26,7 +26,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float maxHealth = 10;
     private Animator anim;
-
+    [SerializeField]
+    private GameObject pistol;
+    [SerializeField]
+    private GameObject shotgun;
+    SpriteRenderer weaponSpr;
+    SpriteRenderer shotgunSpr;
     private void Awake()
     {
         playerControls = new PlayerControls();
@@ -37,6 +42,8 @@ public class PlayerController : MonoBehaviour
 
         health = maxHealth;
         weaponPivot = transform.Find("WeaponPivot").GetComponent<Transform>();
+        weaponSpr = pistol.GetComponent<SpriteRenderer>();
+        shotgunSpr = shotgun.GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
@@ -82,11 +89,35 @@ public class PlayerController : MonoBehaviour
             {
                 spr.flipX = false;
             }
-        }else if(dir.x < 0f)
+
+            if(weaponSpr.flipY == true)
+            {
+                weaponSpr.flipY = false;
+                
+            }
+
+            if (shotgunSpr.flipY == true)
+            {
+                shotgunSpr.flipY = false;
+
+            }
+
+        }
+        else if(dir.x < 0f)
         {
             if (spr.flipX == false)
             {
                 spr.flipX = true;
+            }
+
+            if (weaponSpr.flipY == false)
+            {
+                weaponSpr.flipY = true;
+            }
+
+            if (shotgunSpr.flipY == false)
+            {
+                shotgunSpr.flipY = true;
             }
         }
 

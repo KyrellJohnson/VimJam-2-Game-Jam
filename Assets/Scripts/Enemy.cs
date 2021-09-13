@@ -9,12 +9,14 @@ public class Enemy : MonoBehaviour
     private float health;
     [SerializeField]
     private float maxHealth = 10;
-
     [SerializeField]
     private float attackDamage = 3;
 
     float playerDamage;
-    float maxDistanceToFollowPlayer = 25;
+    [SerializeField]
+    float maxDistanceToFollowPlayer = 12;
+    [SerializeField]
+    float maxDistanceCanAttack = 10;
     float distanceToPlayer;
     SpriteRenderer spr;
     private Vector2 dir;
@@ -73,7 +75,7 @@ public class Enemy : MonoBehaviour
             gameObject.transform.parent.GetComponent<AIPath>().enabled = true;
         }
 
-        if(distanceToPlayer < 20)
+        if(distanceToPlayer < maxDistanceCanAttack)
         {
             trackPlayer();
             attackPlayer();
@@ -93,14 +95,14 @@ public class Enemy : MonoBehaviour
         Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
         weaponPivot.rotation = rotation;
 
-        if (dir.x >= 0.0)
+        if (dir.x < 0.0)
         {
             if (spr.flipX == true)
             {
                 spr.flipX = false;
             }
         }
-        else if (dir.x < 0f)
+        else if (dir.x >= 0f)
         {
             if (spr.flipX == false)
             {
@@ -119,7 +121,7 @@ public class Enemy : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast( firePoint.position, dir, layerMask);
         
         //If the collider of the object hit is not NUll
-        if (hit.collider.tag == "Player")
+        if (hit.collider.tag == "Player" || hit.collider.tag == "Enemy")
         {
             Shoot();
         }
