@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,9 +23,9 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spr;
 
     [SerializeField]
-    private float health;
+    private int health;
     [SerializeField]
-    private float maxHealth = 10;
+    private int maxHealth = 5;
     private Animator anim;
     [SerializeField]
     private GameObject pistol;
@@ -32,6 +33,10 @@ public class PlayerController : MonoBehaviour
     private GameObject shotgun;
     SpriteRenderer weaponSpr;
     SpriteRenderer shotgunSpr;
+
+    [SerializeField]
+    private Image[] healthBar;
+
     private void Awake()
     {
         playerControls = new PlayerControls();
@@ -44,6 +49,8 @@ public class PlayerController : MonoBehaviour
         weaponPivot = transform.Find("WeaponPivot").GetComponent<Transform>();
         weaponSpr = pistol.GetComponent<SpriteRenderer>();
         shotgunSpr = shotgun.GetComponent<SpriteRenderer>();
+
+        
     }
 
     private void OnEnable()
@@ -143,9 +150,63 @@ public class PlayerController : MonoBehaviour
         return damage;
     }
 
-    public void takeDamage(float dmg)
+    public void healthCalc(int dmg)
     {
-        health = health - dmg;
+        health = health + dmg;
+        //healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
+
+        if(health == 5)
+        {
+            healthBar[0].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[1].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[2].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[3].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[4].GetComponent<CanvasGroup>().alpha = 1;
+        }
+        else if(health == 4)
+        {
+            healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[1].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[2].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[3].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[4].GetComponent<CanvasGroup>().alpha = 1;
+        }
+        else if(health == 3)
+        {
+            healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[1].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[2].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[3].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[4].GetComponent<CanvasGroup>().alpha = 1;
+        }
+        else if (health == 2)
+        {
+            healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[1].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[2].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[3].GetComponent<CanvasGroup>().alpha = 1;
+            healthBar[4].GetComponent<CanvasGroup>().alpha = 1;
+        }
+        else if (health == 1)
+        {
+            healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[1].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[2].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[3].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[4].GetComponent<CanvasGroup>().alpha = 1;
+        }
+        else if (health == 0)
+        {
+            healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[1].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[2].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[3].GetComponent<CanvasGroup>().alpha = 0;
+            healthBar[4].GetComponent<CanvasGroup>().alpha = 0;
+        }
+
+
+        Debug.Log(health);
+
         if(health <= 0)
         {
             Debug.Log("GAME OVER");

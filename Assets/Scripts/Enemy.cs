@@ -1,4 +1,3 @@
-using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +9,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float maxHealth = 10;
     [SerializeField]
-    private float attackDamage = 3;
-
+    private int attackDamage = 1;
+    private Rigidbody2D rb;
     float playerDamage;
-    [SerializeField]
-    float maxDistanceToFollowPlayer = 12;
+
     [SerializeField]
     float maxDistanceCanAttack = 10;
     float distanceToPlayer;
@@ -23,10 +21,19 @@ public class Enemy : MonoBehaviour
 
     public Transform firePoint;
     public GameObject bulletPreFab;
+    public GameObject weaponPivot;
     [SerializeField]
     private float bulletWaitTime = 0.4f;
     private float timer = 0.0f;
     public float bulletForce = 35f;
+
+    Transform Tplayer;
+    public float detectRange = 6;
+    public bool inRange;
+    public float moveSpeed = 2f;
+    Rigidbody2D rbPLAYER;
+
+
     private void Awake()
     {
         health = maxHealth;
@@ -34,9 +41,27 @@ public class Enemy : MonoBehaviour
         PlayerController playerController = player.GetComponent<PlayerController>();
         playerDamage = playerController.getAttackDamage();
         spr = GetComponent<SpriteRenderer>();
+        Tplayer = GameObject.Find("Player").GetComponent<Transform>();
+        detectRange *= detectRange;
+        rbPLAYER = player.GetComponent<Rigidbody2D>();
     }
 
-    public float getDamageVal()
+    void Update()
+    {
+        // a little cheaper than 'distance'.. deleted the code to create a position from the player values.
+        float distsqr = (Tplayer.position - transform.position).sqrMagnitude;
+
+        if (distsqr <= detectRange && distsqr > 2)
+        {
+            inRange = true;
+            // get a velocity based on the normalized direction, multiplied by move speed.
+            Vector2 velocity = (Tplayer.transform.position - transform.position).normalized * moveSpeed;
+            rbPLAYER.velocity = velocity;
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(Tplayer.position.x, Tplayer.position.y), moveSpeed * Time.deltaTime);
+        }
+    }
+
+    public int getDamageVal()
     {
         return attackDamage;
     }
@@ -56,7 +81,7 @@ public class Enemy : MonoBehaviour
     {
         getDistance();
         checkDistance();
-        
+        //gameObject.GetComponent<AIPath>().destination = GameObject.FindGameObjectWithTag("Player").transform.position;
     }
 
     public void getDistance()
@@ -67,14 +92,6 @@ public class Enemy : MonoBehaviour
 
     private void checkDistance()
     {
-        if(gameObject.transform.parent.GetComponent<AIPath>().enabled == true && distanceToPlayer >= maxDistanceToFollowPlayer)
-        {
-            gameObject.transform.parent.GetComponent<AIPath>().enabled = false;
-        }else if(gameObject.transform.parent.GetComponent<AIPath>().enabled == false && distanceToPlayer < maxDistanceToFollowPlayer)
-        {
-            gameObject.transform.parent.GetComponent<AIPath>().enabled = true;
-        }
-
         if(distanceToPlayer < maxDistanceCanAttack)
         {
             trackPlayer();
@@ -119,11 +136,12 @@ public class Enemy : MonoBehaviour
         int layerMask = LayerMask.GetMask("Player");
         //Get the first object hit by the ray
         RaycastHit2D hit = Physics2D.Raycast( firePoint.position, dir, layerMask);
-        
+        //Debug.Log(hit.collider.tag);
         //If the collider of the object hit is not NUll
         if (hit.collider.tag == "Player" || hit.collider.tag == "Enemy")
         {
             Shoot();
+
         }
         
         
@@ -140,13 +158,17 @@ public class Enemy : MonoBehaviour
             
             timer = 0.0f;
             GameObject bullet = Instantiate(bulletPreFab, firePoint.position, firePoint.rotation);
-            bullet.transform.parent = gameObject.transform;
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+            //bullet.transform.parent = gameObject.transform;
+            Rigidbody2D rb1 = bullet.GetComponent<Rigidbody2D>();
+            rb1.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
             
         }
+
+        
     }
 
- 
+    
+
+
 
 }
