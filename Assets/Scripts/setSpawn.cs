@@ -16,5 +16,16 @@ public class setSpawn : MonoBehaviour
         spawnPoint = GameObject.Find("StartingPoint");
         spawnLoc = (spawnPoint.transform.position);
         player.transform.position = spawnLoc;
+        getNumberOfEnemies();
     }
+
+
+    public void getNumberOfEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        print(enemies.Length);
+    }
+
+
+
 }

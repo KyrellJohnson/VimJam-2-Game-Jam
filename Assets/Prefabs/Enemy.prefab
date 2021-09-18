@@ -261,7 +261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  maxHealth: 3
+  maxHealth: 2
   attackDamage: 1
   maxDistanceCanAttack: 8
   firePoint: {fileID: 828388983030384901}
@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 828388983472725613}
   m_Layer: 7
   m_Name: Enemy
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

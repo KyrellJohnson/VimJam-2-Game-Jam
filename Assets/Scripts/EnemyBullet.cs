@@ -25,7 +25,7 @@ public class EnemyBullet : MonoBehaviour
     public void FixedUpdate()
     {
         timer += Time.deltaTime;
-        if (timer > 5.0f)
+        if (timer > 7.0f)
         {
             Destroy(gameObject);
         }

@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     private float maxHealth = 10;
     [SerializeField]
     private int attackDamage = 1;
-    private Rigidbody2D rb;
     float playerDamage;
 
     [SerializeField]

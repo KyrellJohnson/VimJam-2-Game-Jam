@@ -8,6 +8,7 @@ TagManager:
   - Spawn Point
   - Rooms
   - Projectile
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -17,12 +18,12 @@ TagManager:
   - UI
   - Player
   - Enemy
-  - 
+  - Boss
   - Floor
   - Walls
   - Projectiles
   - Enemy Projectile
-  - 
+  - NonHittable
   - 
   - 
   - 
@@ -53,4 +54,7 @@ TagManager:
     locked: 0
   - name: Non Touchable Objects
     uniqueID: 3357782527
+    locked: 0
+  - name: Boss
+    uniqueID: 3394060705
     locked: 0
