@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,6 +38,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Image[] healthBar;
 
+    [SerializeField]
+    private AudioSource source;
+    private float maxVolume;
+    private float currentVolume;
+
     private void Awake()
     {
         playerControls = new PlayerControls();
@@ -44,6 +50,9 @@ public class PlayerController : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
         spr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
+        source.volume = 0f;
+        maxVolume = .1f;
 
         health = maxHealth;
         weaponPivot = transform.Find("WeaponPivot").GetComponent<Transform>();
@@ -84,11 +93,23 @@ public class PlayerController : MonoBehaviour
         if(horizontal != 0|| vertical != 0)
         {
             anim.SetBool("moving", true);
+
+            source.mute = false;
+            if(source.volume < maxVolume)
+            {
+                source.volume = source.volume + (0.15f * Time.deltaTime);
+            }
         }
         else
         {
             anim.SetBool("moving", false);
+            if (source.volume != 0f)
+            {
+                source.volume = source.volume - (0.3f * Time.deltaTime);
+            }
         }
+
+        
 
 
         Vector2 mousePos = playerControls.Player.MouseAim.ReadValue<Vector2>();
