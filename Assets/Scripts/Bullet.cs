@@ -16,8 +16,8 @@ public class Bullet : MonoBehaviour
         //effect.transform.parent = gameObject.transform;
         Destroy(effect, 0.2f);
         Destroy(gameObject);
-        Debug.Log("!!!!" + collision.gameObject.name);
-        if (collision.gameObject.tag == "Enemy")
+        Debug.Log("!!!!" + collision.gameObject.name + "!!!!");
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Boss")
         {
             if(collision.gameObject.name == "Enemy 1 GFX")
             {
@@ -25,6 +25,9 @@ public class Bullet : MonoBehaviour
             }else if(collision.gameObject.name == "Enemy 2 GFX")
             {
                 collision.transform.GetComponent<BoxEnemy>().TakeDamage();
+            }else if(collision.gameObject.name == "Boss GFX")
+            {
+                collision.transform.GetComponent<Boss>().BossTakeDamage(1);
             }
             
 

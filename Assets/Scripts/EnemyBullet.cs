@@ -1,13 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class EnemyBullet : MonoBehaviour
 {
     public GameObject hitEffect;
     private float timer = 0.0f;
+    [SerializeField]
+    private AudioSource fireSound;
+
+    private void Awake()
+    {
+        fireSound.Play();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        
         GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
         //effect.transform.parent = gameObject.transform;
 
@@ -24,6 +34,7 @@ public class EnemyBullet : MonoBehaviour
 
     public void FixedUpdate()
     {
+        
         timer += Time.deltaTime;
         if (timer > 7.0f)
         {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class Boss : MonoBehaviour
     private Transform firePoint;
 
     [SerializeField]
+    private Animator animator;
+
+    [SerializeField]
     private GameObject
         bulletPreFab,
         weaponPivot;
@@ -29,10 +33,18 @@ public class Boss : MonoBehaviour
     [SerializeField]
     private AudioSource bossMovingSound;
 
-    private float health;
+    [SerializeField]
+    private Slider bossHealthBar;
+    [SerializeField]
+    private CanvasGroup gameover;
+    [SerializeField]
+    private Text gameovertext;
+
+    private float bossHealth;
     private float timer = 0.0f;
     private float playerDamage;
     private float distanceToPlayer;
+    private bool isDead = false;
 
     private Vector2 dir;
 
@@ -43,7 +55,8 @@ public class Boss : MonoBehaviour
     private void Awake()
     {
         //set health equal to max health
-        health = maxHealth;
+        bossHealth = maxHealth;
+        bossHealthBar.value = maxHealth;
 
         //Get instance of player
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -63,6 +76,13 @@ public class Boss : MonoBehaviour
 
         //rigid body of player
         rb_Player = player.GetComponent<Rigidbody2D>();
+
+        animator = gameObject.GetComponent<Animator>();
+
+        gameover.alpha = 0;
+        gameover.interactable = false;
+        gameover.blocksRaycasts = false;
+
 
 
     }
@@ -88,7 +108,7 @@ public class Boss : MonoBehaviour
     {
         distanceToPlayer = Vector3.Distance(gameObject.transform.position, GameObject.Find("Player").transform.position);
 
-        if(distanceToPlayer < maxDistanceCanAttack)
+        if(distanceToPlayer < maxDistanceCanAttack & isDead == false)
         {
             shouldFlip();
             attackPlayer();
@@ -128,10 +148,11 @@ public class Boss : MonoBehaviour
         int layerMask = LayerMask.GetMask("Player");
 
         RaycastHit2D hit = Physics2D.Raycast(firePoint.position, dir, layerMask);
-        print(hit.collider.tag);
+        //print(hit.collider.tag);
         if (hit.collider.tag == "Player" || hit.collider.tag == "Enemy Projectile" || hit.collider.tag == "Boss")
         {
-            Shoot();
+            
+                Shoot();
         }
 
 
@@ -149,6 +170,66 @@ public class Boss : MonoBehaviour
             Rigidbody2D rb1 = bullet.GetComponent<Rigidbody2D>();
             rb1.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
         }
+    }
+
+    public void BossTakeDamage(int damage)
+    {
+        bossHealth = bossHealth - damage;
+        print(bossHealth);
+        bossHealthBar.value = bossHealth;
+
+        if(bossHealth <= 0)
+        {
+            isDead = true;
+            //start boss death anim
+            animator.SetTrigger("deadBoss");
+            pauseGame endGame = GameObject.Find("GameManager").GetComponent<pauseGame>();
+            //End game
+            Destroy(weaponPivot);
+            StartCoroutine(EndGame());
+            endGame.disablePause();
+            StartCoroutine(EndGameText(endGame));
+
+        }
+    }
+
+    IEnumerator EndGame()
+    {
+        yield return new WaitForSeconds(1.5f);
+        gameover.alpha = 1;
+        gameover.interactable = true;
+        gameover.blocksRaycasts = true;
+        Time.timeScale = 0;
+        AudioListener.volume = 0;
+    }
+
+    IEnumerator EndGameText(pauseGame pause)
+    {
+
+
+        gameovertext.text = "Returning to main menu in ... 10";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 9";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 8";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 7";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 6";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 5";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 4";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 3";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 2";
+        yield return new WaitForSecondsRealtime(1f);
+        gameovertext.text = "Returning to main menu in ... 1";
+        yield return new WaitForSecondsRealtime(1f);
+
+        pause.MainMenu();
+        
     }
 
 }
