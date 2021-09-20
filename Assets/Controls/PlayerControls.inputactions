@@ -46,9 +46,17 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Quit",
+                    "name": "Pause",
                     "type": "Button",
                     "id": "5959608b-9495-41aa-86fa-79a6eecef53e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "a84dc134-ddfc-4cce-bdf2-60a1efcf5c02",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -146,7 +154,7 @@
                 {
                     "name": "",
                     "id": "2931ea9b-9ee3-4099-b0ae-15582ea4e9ad",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -161,7 +169,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quit",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6fd0471a-fbda-4e79-8edf-1b19ce43e732",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

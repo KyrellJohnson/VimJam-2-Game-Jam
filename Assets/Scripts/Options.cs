@@ -151,6 +151,24 @@ public class Options : MonoBehaviour
 
     }
 
+   public void HideOptions()
+    {
+        CanvasGroup optionsUI = gameObject.GetComponent<CanvasGroup>();
+        optionsUI.alpha = 0;
+        optionsUI.interactable = false;
+        optionsUI.blocksRaycasts = false;
+    }
+
+    public void ShowOptions()
+    {
+        CanvasGroup optionsUI = gameObject.GetComponent<CanvasGroup>();
+        optionsUI.alpha = 1;
+        optionsUI.interactable = true;
+        optionsUI.blocksRaycasts = true;
+    }
+
+    
+
 
 
 }

@@ -272,6 +272,7 @@ MonoBehaviour:
   detectRange: 6
   inRange: 0
   moveSpeed: 1
+  healthDropItem: {fileID: 2124902342196062523, guid: 595b9f43a7290d848a1661e29c9f8f54, type: 3}
 --- !u!95 &4213540415867279655
 Animator:
   serializedVersion: 3

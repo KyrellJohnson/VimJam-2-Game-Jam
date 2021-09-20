@@ -32,6 +32,9 @@ public class Enemy : MonoBehaviour
     public float moveSpeed = 2f;
     Rigidbody2D rbPLAYER;
 
+    [SerializeField]
+    private GameObject healthDropItem;
+
 
     private void Awake()
     {
@@ -43,6 +46,8 @@ public class Enemy : MonoBehaviour
         Tplayer = GameObject.Find("Player").GetComponent<Transform>();
         detectRange *= detectRange;
         rbPLAYER = player.GetComponent<Rigidbody2D>();
+        
+        
     }
 
     void Update()
@@ -71,7 +76,17 @@ public class Enemy : MonoBehaviour
 
         if(health <= 0f)
         {
+            
+            int rand = Random.Range(0, 100);
+            print("RAND" + rand);
+            if (rand < 33) //33%
+            {
+                Instantiate(healthDropItem, gameObject.transform.position, gameObject.transform.rotation);       
+            }
+
+
             Destroy(gameObject.transform.parent.gameObject);
+            
         }
 
     }
@@ -155,11 +170,11 @@ public class Enemy : MonoBehaviour
         if (timer > bulletWaitTime)
         {
             
-            timer = 0.0f;
-            GameObject bullet = Instantiate(bulletPreFab, firePoint.position, firePoint.rotation);
-            //bullet.transform.parent = gameObject.transform;
-            Rigidbody2D rb1 = bullet.GetComponent<Rigidbody2D>();
-            rb1.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+                timer = 0.0f;
+                GameObject bullet = Instantiate(bulletPreFab, firePoint.position, firePoint.rotation);
+                //bullet.transform.parent = gameObject.transform;
+                Rigidbody2D rb1 = bullet.GetComponent<Rigidbody2D>();
+                rb1.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
             
         }
 

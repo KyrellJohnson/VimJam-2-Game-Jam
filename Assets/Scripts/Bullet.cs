@@ -16,10 +16,19 @@ public class Bullet : MonoBehaviour
         //effect.transform.parent = gameObject.transform;
         Destroy(effect, 0.2f);
         Destroy(gameObject);
-
+        Debug.Log("!!!!" + collision.gameObject.name);
         if (collision.gameObject.tag == "Enemy")
         {
-            collision.transform.GetComponent<Enemy>().TakeDamage();
+            if(collision.gameObject.name == "Enemy 1 GFX")
+            {
+                collision.transform.GetComponent<Enemy>().TakeDamage();
+            }else if(collision.gameObject.name == "Enemy 2 GFX")
+            {
+                collision.transform.GetComponent<BoxEnemy>().TakeDamage();
+            }
+            
+
+            
 
 
             Debug.Log("Hit Enemey");

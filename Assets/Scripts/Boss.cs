@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Boss : MonoBehaviour
 {
@@ -24,6 +25,9 @@ public class Boss : MonoBehaviour
     private GameObject
         bulletPreFab,
         weaponPivot;
+
+    [SerializeField]
+    private AudioSource bossMovingSound;
 
     private float health;
     private float timer = 0.0f;
@@ -67,7 +71,7 @@ public class Boss : MonoBehaviour
     {
         float distsqr = (playerTransform.position - transform.position).sqrMagnitude;
 
-        if(distsqr <= detectRange && distsqr > 10)
+        if(distsqr <= detectRange && distsqr > 5)
         {
             Vector2 velocity = (playerTransform.transform.position - transform.position).normalized * moveSpeed;
 

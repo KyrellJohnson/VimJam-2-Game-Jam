@@ -9,6 +9,7 @@ TagManager:
   - Rooms
   - Projectile
   - Boss
+  - GameManager
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Projectiles
   - Enemy Projectile
   - NonHittable
-  - 
+  - Item
   - 
   - 
   - 

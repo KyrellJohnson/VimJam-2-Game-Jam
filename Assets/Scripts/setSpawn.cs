@@ -10,6 +10,10 @@ public class setSpawn : MonoBehaviour
     private GameObject spawnPoint;
     private Vector2 spawnLoc;
     private Transform playerLoc;
+
+    [SerializeField]
+    private GameObject accessCard;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -20,10 +24,19 @@ public class setSpawn : MonoBehaviour
     }
 
 
-    public void getNumberOfEnemies()
+    public GameObject[] getNumberOfEnemies()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        print(enemies.Length);
+
+        return enemies;
+        
+    }
+
+    public GameObject getAccessCard()
+    {
+        GameObject obj = accessCard;
+
+        return obj;
     }
 
 

@@ -59,9 +59,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Quit"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""5959608b-9495-41aa-86fa-79a6eecef53e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""a84dc134-ddfc-4cce-bdf2-60a1efcf5c02"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -159,7 +167,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2931ea9b-9ee3-4099-b0ae-15582ea4e9ad"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -174,7 +182,18 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Quit"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6fd0471a-fbda-4e79-8edf-1b19ce43e732"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -190,7 +209,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_MouseAim = m_Player.FindAction("MouseAim", throwIfNotFound: true);
         m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
         m_Player_SwitchWeapons = m_Player.FindAction("SwitchWeapons", throwIfNotFound: true);
-        m_Player_Quit = m_Player.FindAction("Quit", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -245,7 +265,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_MouseAim;
     private readonly InputAction m_Player_Shooting;
     private readonly InputAction m_Player_SwitchWeapons;
-    private readonly InputAction m_Player_Quit;
+    private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_Interact;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -255,7 +276,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @MouseAim => m_Wrapper.m_Player_MouseAim;
         public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
         public InputAction @SwitchWeapons => m_Wrapper.m_Player_SwitchWeapons;
-        public InputAction @Quit => m_Wrapper.m_Player_Quit;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -280,9 +302,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SwitchWeapons.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapons;
                 @SwitchWeapons.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapons;
                 @SwitchWeapons.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapons;
-                @Quit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
-                @Quit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
-                @Quit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -302,9 +327,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SwitchWeapons.started += instance.OnSwitchWeapons;
                 @SwitchWeapons.performed += instance.OnSwitchWeapons;
                 @SwitchWeapons.canceled += instance.OnSwitchWeapons;
-                @Quit.started += instance.OnQuit;
-                @Quit.performed += instance.OnQuit;
-                @Quit.canceled += instance.OnQuit;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -316,6 +344,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMouseAim(InputAction.CallbackContext context);
         void OnShooting(InputAction.CallbackContext context);
         void OnSwitchWeapons(InputAction.CallbackContext context);
-        void OnQuit(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

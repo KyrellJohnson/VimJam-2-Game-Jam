@@ -9,7 +9,10 @@ public class SceneManagerControl : MonoBehaviour
 
 
     [SerializeField]
-    private AudioSource menuAudioClip;
+    private AudioSource
+        menuAudioClip,
+        onHoverSource;
+        
 
     [SerializeField]
     private GameObject optionsUI, mainMenuUI;
@@ -24,6 +27,7 @@ public class SceneManagerControl : MonoBehaviour
         mainMenuLayer.interactable = true;
         optionsLayer.alpha = 0;
         optionsLayer.interactable = false;
+        onHoverSource.mute = false;
     }
 
     public void StartGame()
@@ -41,6 +45,8 @@ public class SceneManagerControl : MonoBehaviour
         mainMenuLayer.alpha = 0;
         mainMenuLayer.interactable = false;
 
+        onHoverSource.mute = true;
+
         // Send to Options Menu
         Debug.Log(mainMenuUI.name);
 
@@ -53,6 +59,7 @@ public class SceneManagerControl : MonoBehaviour
         // Send to main menu
         if(SceneManager.GetActiveScene().isLoaded.Equals(0))
         {
+            onHoverSource.mute = false;
             optionsLayer.alpha = 0;
             optionsLayer.interactable = false;
             mainMenuLayer.alpha = 1;

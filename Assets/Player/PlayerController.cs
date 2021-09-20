@@ -39,9 +39,16 @@ public class PlayerController : MonoBehaviour
     private Image[] healthBar;
 
     [SerializeField]
-    private AudioSource source;
+    private AudioSource sourceWalking;
     private float maxVolume;
     private float currentVolume;
+    GameObject lastEnemyLoc = null;
+    bool calculateEnemies = true;
+    GameObject[] enemies;
+    GameObject accessCard;
+
+    [SerializeField]
+    private CanvasGroup gameover;
 
     private void Awake()
     {
@@ -50,16 +57,19 @@ public class PlayerController : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
         spr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        source = GetComponent<AudioSource>();
-        source.volume = 0f;
+        weaponController = GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponControlller>();
+        sourceWalking.volume = 0f;
         maxVolume = .1f;
+        
 
         health = maxHealth;
         weaponPivot = transform.Find("WeaponPivot").GetComponent<Transform>();
         weaponSpr = pistol.GetComponent<SpriteRenderer>();
         shotgunSpr = shotgun.GetComponent<SpriteRenderer>();
-
-        playerControls.Player.Quit.performed += _ => quitGame();
+        gameover.alpha = 0;
+        gameover.interactable = false;
+        gameover.blocksRaycasts = false;
+        
     }
 
     void quitGame()
@@ -94,18 +104,18 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("moving", true);
 
-            source.mute = false;
-            if(source.volume < maxVolume)
+            sourceWalking.mute = false;
+            if(sourceWalking.volume < maxVolume)
             {
-                source.volume = source.volume + (0.15f * Time.deltaTime);
+                sourceWalking.volume = sourceWalking.volume + (0.15f * Time.deltaTime);
             }
         }
         else
         {
             anim.SetBool("moving", false);
-            if (source.volume != 0f)
+            if (sourceWalking.volume != 0f)
             {
-                source.volume = source.volume - (0.3f * Time.deltaTime);
+                sourceWalking.volume = sourceWalking.volume - (0.3f * Time.deltaTime);
             }
         }
 
@@ -159,6 +169,10 @@ public class PlayerController : MonoBehaviour
                 shotgunSpr.flipY = true;
             }
         }
+        
+
+        
+
 
 
     }
@@ -182,12 +196,38 @@ public class PlayerController : MonoBehaviour
         return damage;
     }
 
+    public void setHealth(int healthAdd)
+    {
+        if(health < maxHealth)
+        {
+            health = health + healthAdd;
+        }
+
+        UpdateHealth(); //update health UI
+
+    }
+
     public void healthCalc(int dmg)
     {
         health = health + dmg;
         //healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
 
-        if(health == 5)
+        UpdateHealth(); //update health UI
+
+
+        Debug.Log(health);
+
+        if(health <= 0)
+        {
+            anim.SetTrigger("death");
+            initiateDeath();
+            Debug.Log("GAME OVER");
+        }
+    }
+
+    void UpdateHealth()
+    {
+        if (health == 5)
         {
             healthBar[0].GetComponent<CanvasGroup>().alpha = 1;
             healthBar[1].GetComponent<CanvasGroup>().alpha = 1;
@@ -195,7 +235,7 @@ public class PlayerController : MonoBehaviour
             healthBar[3].GetComponent<CanvasGroup>().alpha = 1;
             healthBar[4].GetComponent<CanvasGroup>().alpha = 1;
         }
-        else if(health == 4)
+        else if (health == 4)
         {
             healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
             healthBar[1].GetComponent<CanvasGroup>().alpha = 1;
@@ -203,7 +243,7 @@ public class PlayerController : MonoBehaviour
             healthBar[3].GetComponent<CanvasGroup>().alpha = 1;
             healthBar[4].GetComponent<CanvasGroup>().alpha = 1;
         }
-        else if(health == 3)
+        else if (health == 3)
         {
             healthBar[0].GetComponent<CanvasGroup>().alpha = 0;
             healthBar[1].GetComponent<CanvasGroup>().alpha = 0;
@@ -235,15 +275,24 @@ public class PlayerController : MonoBehaviour
             healthBar[3].GetComponent<CanvasGroup>().alpha = 0;
             healthBar[4].GetComponent<CanvasGroup>().alpha = 0;
         }
-
-
-        Debug.Log(health);
-
-        if(health <= 0)
-        {
-            Debug.Log("GAME OVER");
-        }
     }
 
+    void initiateDeath()
+    {
+        playerControls.Player.Disable();
+        pauseGame endGame = GameObject.Find("GameManager").GetComponent<pauseGame>();
+        StartCoroutine(EndGame(endGame));
+        gameover.alpha = 1;
+        gameover.interactable = true;
+        gameover.blocksRaycasts = true;
+        endGame.disablePause();
+        weaponController.DisableWeapons();
+    }
+
+    IEnumerator EndGame(pauseGame endGame)
+    {
+        yield return new WaitForSeconds(.5f);
+        endGame.stopGame();
+    }
 
 }

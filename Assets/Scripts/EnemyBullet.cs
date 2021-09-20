@@ -18,7 +18,7 @@ public class EnemyBullet : MonoBehaviour
         {
             int enemyDamage = 1; //GetComponentInParent<Enemy>().getDamageVal();
             collision.transform.GetComponent<PlayerController>().healthCalc((-1)*enemyDamage);
-             Debug.Log("Hit Player");
+             //Debug.Log("Hit Player");
         }
     }
 
